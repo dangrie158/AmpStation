@@ -1,0 +1,17 @@
+(footprint "3.2mm Hole Oblong" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (attr through_hole)
+  (fp_text reference "REF**" (at 0 -5 unlocked) (layer "Dwgs.User") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 983b88d7-12c8-4c78-8a7d-ab4d1399820d)
+  )
+  (fp_text value "3.2mm Hole Oblong" (at 0 7.5 unlocked) (layer "F.Fab") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 24434f08-23f9-4a1b-9ac4-31df20eb4517)
+  )
+  (fp_text user "${REFERENCE}" (at 0 6 unlocked) (layer "F.Fab")
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 48486f4a-08a5-44a6-aec3-ae0a577a21aa)
+  )
+  (pad "1" thru_hole oval (at 0 0) (size 6.2 9.2) (drill oval 3.2 6.2) (layers "*.Cu" "*.Mask") (tstamp b58a6a30-6cdc-4941-83d8-17f443af73c4))
+)

@@ -1,0 +1,23 @@
+(footprint "RCJ-2223" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (fp_text reference "REF**" (at 0 -12.5 unlocked) (layer "F.SilkS") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 5f829387-0d0f-4569-962a-746af152baff)
+  )
+  (fp_text value "RCJ-2223" (at 0 13 unlocked) (layer "F.Fab") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 5f4075fc-79cd-4924-ba8c-4f677b98b708)
+  )
+  (fp_text user "${REFERENCE}" (at 0 14.5 unlocked) (layer "F.Fab") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 34236d63-3e06-40f4-ba11-70dc283eaa53)
+  )
+  (pad "1" thru_hole circle (at 0 -7) (size 10.2 10.2) (drill 10.2) (layers "*.Cu" "*.Mask") (tstamp b26b08f3-6dbc-421a-944f-cb059865692e))
+  (pad "1" thru_hole circle (at 0 7) (size 10.2 10.2) (drill 10.2) (layers "*.Cu" "*.Mask") (tstamp 99a062a2-a4ef-4e90-96a8-8165a638ca07))
+  (pad "1" thru_hole circle (at 9 0) (size 4.5 4.5) (drill 2.5) (layers "*.Cu" "*.Mask") (tstamp 69dc5b76-0262-478e-8039-6c88c4f6b3c8))
+  (model "${KIPRJMOD}/CustomParts.3d/CUI_DEVICES_RCJ-2223.STEP"
+    (offset (xyz 0 1 -3))
+    (scale (xyz 1 1 1))
+    (rotate (xyz 0 0 0))
+  )
+)

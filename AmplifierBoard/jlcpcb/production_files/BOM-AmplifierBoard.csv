@@ -1,0 +1,120 @@
+Comment,Designator,Footprint,LCSC
+10µH,"L10,L11,L12,L13,L14,L15,L16,L17,L18,L19,L20,L21,L6,L7,L8,L9",L_0805_2012Metric_Pad1.15x1.40mm_HandSolder,C1046
+30pF,C97,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C107114
+22µF,C40,C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,C12891
+470pF,"C42,C43,C46,C47",C_0603_1608Metric_Pad1.08x0.95mm_HandSolder,C1620
+18pF,"C53,C54",C_0603_1608Metric_Pad1.08x0.95mm_HandSolder,C1647
+33nF,"C15,C16",C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,C1739
+100pF,"C93,C94,C95,C96",C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C1790
+0,"R43,R46",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C21189
+1k,"R47,R48,R49,R50,R51,R52",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C21190
+3k3,"R13,R14,R17,R18",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C22978
+4k7,"R1,R2,R55,R56",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C23162
+680,"R11,R12,R19,R20",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C23228
+22,"R21,R22,R23,R24",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C23345
+100k,"R30,R31,R32,R33,R34,R35,R36,R37,R38,R39,R40,R41,R57,R58",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C25803
+10k,"R25,R26,R27,R28,R29,R42,R44,R45,R53,R54,R8",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C25804
+100nF,"C10,C12,C13,C14,C35,C36,C37,C38,C49,C50,C52,C55,C56,C58,C60,C61,C62,C63,C64,C66,C67,C68,C69,C70,C72,C73,C77,C78,C80,C81,C84,C85,C88,C89,C91,C92",C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C28233
+1µF 50V,"C1,C2,C4,C44,C5,C7,C8",C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C28323
+22k,R7,R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C31850
+1.8k,"R10,R15,R16,R9",R_0603_1608Metric_Pad0.98x0.95mm_HandSolder,C4177
+74HC14,U17,SOIC-14_3.9x8.7mm_P1.27mm,C5605
+10µF,C83,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,C7171
+LM358,U16,SOIC-8_5.23x5.23mm_P1.27mm,C7950
+1N4148,"D2,D3",D_SOD-123,C81598
+12MHz,Y1,Crystal_SMD_3225-4Pin_3.2x2.5mm_HandSoldering,C9002
+~,H2,3.2mm Hole Oblong,
+~,H1,3.2mm Hole Oblong,
+~,H4,3.2mm Hole Oblong,
+~,H3,3.2mm Hole Oblong,
+1µ,C26,C_Rect_L10.3mm_W5.0mm_P7.50mm_MKS4,
+AUX1,J3,RCJ-2223,
+1µ,C25,C_Rect_L10.3mm_W5.0mm_P7.50mm_MKS4,
+10n,C29,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+LM1117MP-3.3,U10,SOT-223-3_TabPin2,
+LM833,U11,SOIC-8_5.23x5.23mm_P1.27mm,
+Heatsink,HS5,ASS_0871_HS,
+1n,C27,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+10µH,L4,L_12x12mm_H4.5mm,
+12-20V,J1,BarrelJack_CLIFF_FC681465S_SMT_Horizontal,
+10µF,C31,CP_Elec_4x5.4,
+1N5822,D1,D_DO-201AD_P15.24mm_Horizontal,
+Bypass,JP3,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,
+1n,C20,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+33nF,C24,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+Digital,J2,FCR684205R,
+Heatsink,HS1,ATS-CPX045045010-197-C1-R0,
+AUX2,J4,RCJ-2223,
+MIC811TUY,U8,SOT-143,
+1n,C19,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+L7809,U14,TO-220-3_Vertical,
+10µF,C32,CP_Elec_4x5.4,
+50k,RV2,Potentiometer_Bourns_3296W_Vertical,
+10n,C22,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+PCM1793,U5,SSOP-28_5.3x10.2mm_P0.65mm,
+Fiducial,FID3,Fiducial_1.5mm_Mask3mm,
+CHANNEL A,J5,"PhoenixContact_MSTBVA_2,5_2-G_1x02_P5.00mm_Vertical",
+WM8804,U6,SSOP-20_5.3x7.2mm_P0.65mm,
+10µF,C76,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+10µF,C59,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+50k,RV1,Potentiometer_Bourns_3296W_Vertical,
+10µF,C57,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+3R3,R5,R_1206_3216Metric_Pad1.30x1.75mm_HandSolder,
+10µF,C90,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+Fiducial,FID1,Fiducial_1.5mm_Mask3mm,
+10µF,C75,CP_Elec_4x5.4,
+Bypass,JP2,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,
+10n,C21,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+L7805,U3,TO-220-3_Vertical,
+10µF,C86,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+PT2258,U12,SO-20_12.8x7.5mm_P1.27mm,
+10µF,C99,CP_Elec_4x5.4,
+3R3,R4,R_1206_3216Metric_Pad1.30x1.75mm_HandSolder,
+Bypass,JP5,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,
+10µH,L2,L_12x12mm_H4.5mm,
+L7812,U2,TO-220-3_Vertical,
+1800pF,C45,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+10µF,C87,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+10µF,C48,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+1µ,C17,C_Rect_L10.3mm_W5.0mm_P7.50mm_MKS4,
+Fiducial,FID2,Fiducial_1.5mm_Mask3mm,
+Serial Debug,J9,PinHeader_1x03_P2.54mm_Vertical,
+10µF,C51,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+470µF 50V,C6,CP_Elec_16x17.5,
+10µF,C100,CP_Elec_4x5.4,
+LM2576S-12,U4,TO-263-5_TabPin3,
+10µF,C34,CP_Elec_4x5.4,
+Bypass,JP4,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,
+1µ,C18,C_Rect_L10.3mm_W5.0mm_P7.50mm_MKS4,
+Frontpanel,J7,PCB-C-20-T-SMT,
+10µF,C71,CP_Elec_4x5.4,
+Heatsink,HS2,ASS_0871_HS,
+LM833,U13,SOIC-8_5.23x5.23mm_P1.27mm,
+LM833,U7,SOIC-8_5.23x5.23mm_P1.27mm,
+100µF 50V,C39,CP_Elec_8x10,
+33nF,C23,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+470µF 16V,C11,CP_Elec_10x10.5,
+10µF,C33,CP_Elec_4x5.4,
+1n,C28,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+10µF,C65,CP_Elec_4x5.4,
+1800pF,C41,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+CHANNEL B,J6,"PhoenixContact_MSTBVA_2,5_2-G_1x02_P5.00mm_Vertical",
+ICSP,J8,IDC-Header_2x03_P2.54mm_Vertical,
+68µH,L5,L_12x12mm_H4.5mm,
+L7905,U9,TO-220-3_Vertical,
+10n,C30,C_Rect_L7.2mm_W2.5mm_P5.00mm_FKS2_FKP2_MKS2_MKP2,
+10µF,C74,CP_Elec_4x5.4,
+470µF 50V,C3,CP_Elec_16x17.5,
+10µF,C82,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+ATmega328PB-A,U18,TQFP-32_7x7mm_P0.8mm,
+10µH,L1,L_12x12mm_H4.5mm,
+10µH,L3,L_12x12mm_H4.5mm,
+LM833,U15,SOIC-8_5.23x5.23mm_P1.27mm,
+100µF 50V,C98,CP_Elec_8x10,
+TPA3251,U1,HTSSOP-44_6.1x14mm_P0.635mm_TopEP4.14x7.01mm,
+10µF,C79,CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder,
+Star Ground,JP6,SolderJumper-2_P1.3mm_Bridged2Bar_RoundedPad1.0x1.5mm,
+Star Ground,JP1,SolderJumper-2_P1.3mm_Bridged2Bar_RoundedPad1.0x1.5mm,
+3R3,R6,R_1206_3216Metric_Pad1.30x1.75mm_HandSolder,
+3R3,R3,R_1206_3216Metric_Pad1.30x1.75mm_HandSolder,
+10nF,C9,C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,

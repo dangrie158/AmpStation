@@ -1,0 +1,3 @@
+3DX_CUI_DEVICES_Supplier: CUI Devices
+3DX_CUI_DEVICES_Description: RCJ-22 Series, Input 1: Red, Input 2: White
+3DX_CUI_DEVICES_Model Number: RCJ-2223

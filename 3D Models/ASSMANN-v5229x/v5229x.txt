@@ -1,0 +1,10 @@
+﻿"Symbol";"Value";"Unit";
+"TraceParts.PartNumber";"90-27012023-063741";"";
+"REFERENCE";"V5229X";"";
+"TraceParts.PartTitle";"Extruded heatsinks with solderpins 10K/W 37,5x32x14mm black anodized TO-220";"";
+"TraceParts.InstanceId";"90-27012023-06374178P2ST6ENTHNY6M228NL8S6AD";"";
+"SUPPLIER";"ASSMANN WSW components";"";
+"DESIGN";"Extruded heatsinks with solderpins 10K/W 37,5x32x14mm black anodized TO-220";"";
+"TRACEPARTS";"TRACEPARTS";"";
+"TraceParts.PartLanguage";"en";"";
+"TraceParts.PartVersion";"1.0.0";"";

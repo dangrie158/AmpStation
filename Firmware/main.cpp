@@ -23,11 +23,11 @@ const auto lcd_backlight = IO::Output(IO::Port::PortD, 7);
 auto enc_a = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 3, IO::PullupMode::Enable);
 auto enc_b = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 4, IO::PullupMode::Enable);
 auto enc_button = IO::Input(IO::Port::PortD, 5, IO::PullupMode::Enable);
-auto encoder = RotaryEncoder(enc_a, enc_b, enc_button);
+auto encoder = RotaryEncoder(enc_a, enc_b, enc_button, 2);
 
 void setup()
 {
-    // Serial::UART::the.init(9600);
+    Serial::UART::the.init(9600);
     // I2C::HardwareMaster::the.init();
     lcd.init();
     load_progressbar_chars(lcd);
@@ -37,7 +37,7 @@ void setup()
     // IO::PinChangeInterruptPort::PCIPortD.attach_callback([]()
     //                                                      { Serial::UART::the.puts("Hello World\n"); });
 }
-int16_t progress = 0;
+int8_t progress = 0;
 void loop()
 {
     // Serial::UART::the.puts("Hello World\n");
@@ -45,6 +45,10 @@ void loop()
 
     progress += encoder.delta();
     draw_progressbar(lcd, LiquidCrystal::Row::First, progress, true);
+    lcd.setCursor(0, LiquidCrystal::Row::Second);
+    char message[17];
+    itoa(progress, message, 10);
+    lcd.puts(message);
     // for (uint8_t progress = 0; progress < 100; progress++)
     // {
     //     draw_progressbar(lcd, LiquidCrystal::Row::First, progress, true);

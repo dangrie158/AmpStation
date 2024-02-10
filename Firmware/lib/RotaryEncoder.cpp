@@ -1,5 +1,6 @@
 #include "RotaryEncoder.h"
 #include <avr/pgmspace.h>
+#include "lib/Serial.h"
 
 const int8_t state_decoding_table[16] PROGMEM = {0, 0, -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, -1, 0, 0};
 

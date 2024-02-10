@@ -29,42 +29,43 @@ namespace IO
 
         inline const void write(const uint8_t value) const
         {
-            *this->m_port = value;
+            *m_port = value;
         }
 
         inline const void set(const uint8_t mask) const
         {
-            *this->m_port |= mask;
+            *m_port |= mask;
         }
 
         inline const void clear(const uint8_t mask) const
         {
-            *this->m_port &= ~mask;
+            *m_port &= ~mask;
         }
 
         inline const void set_output(const uint8_t mask) const
         {
-            *this->m_ddr |= mask;
+            *m_ddr |= mask;
         }
 
         inline const void set_input(const uint8_t mask) const
         {
-            *this->m_ddr &= ~mask;
-            *this->m_port &= ~mask;
+            *m_ddr &= ~mask;
+            *m_port &= ~mask;
         }
 
         inline const void set_input_pullup(const uint8_t mask) const
         {
-            *this->m_ddr &= ~mask;
-            *this->m_port |= mask;
+            *m_ddr &= ~mask;
+            *m_port |= mask;
         }
 
         uint8_t read() const
         {
-            return *this->m_pin;
+            return *m_pin;
         }
 
     private:
+        Port(const Port &other) = delete;
         volatile uint8_t *m_port;
         volatile uint8_t *m_ddr;
         volatile uint8_t *m_pin;
@@ -80,19 +81,29 @@ namespace IO
             m_port.set_output(1 << m_pin);
         }
 
-        inline void set() const
+        inline void high() const
         {
             m_port.set(1 << m_pin);
         }
 
-        inline void clear() const
+        inline void low() const
         {
             m_port.clear(1 << m_pin);
         }
 
         inline void write(uint8_t value)
         {
-            value ? set() : clear();
+            value ? high() : low();
+        }
+
+        inline uint8_t pin() const
+        {
+            return m_pin;
+        }
+
+        const inline Port &port() const
+        {
+            return m_port;
         }
 
     private:
@@ -119,6 +130,16 @@ namespace IO
         inline bool read() const
         {
             return m_port.read() & (1 << m_pin);
+        }
+
+        inline uint8_t pin() const
+        {
+            return m_pin;
+        }
+
+        const inline Port &port() const
+        {
+            return m_port;
         }
 
     private:

@@ -1,26 +1,28 @@
 #include "LiquidCrystal.h"
 
-#include <stdio.h>
-#include <string.h>
 #include <inttypes.h>
+#include <avr/pgmspace.h>
 #include <util/delay.h>
 
-void LiquidCrystal::Display::begin()
+void LiquidCrystal::Display::init()
 {
-    m_displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS | LCD_2LINE;
+    uint8_t displayfunction = LCD_4BITMODE | LCD_5x8DOTS | LCD_2LINE;
 
-    _delay_us(50000);
-    pin_rs.clear();
-    pin_en.clear();
-    pin_rw.clear();
-    send_command(LCD_FUNCTIONSET | m_displayfunction);
+    _delay_ms(50);
+    pin_rs.low();
+    pin_en.low();
+    pin_rw.low();
+    // HD44780 datasheet p. 46
+    // enable 4-bit mode
+    write_4_bits(0x03);
     _delay_us(4500);
-    // second try
-    send_command(LCD_FUNCTIONSET | m_displayfunction);
+    write_4_bits(0x03);
+    _delay_us(4500);
+    write_4_bits(0x03);
     _delay_us(150);
-    // third go
-    send_command(LCD_FUNCTIONSET | m_displayfunction);
-    send_command(LCD_FUNCTIONSET | m_displayfunction);
+    write_4_bits(0x02);
+
+    send_command(LCD_FUNCTIONSET | displayfunction);
 
     m_displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
     display();
@@ -131,40 +133,61 @@ void LiquidCrystal::Display::createChar(uint8_t location, uint8_t charmap[])
     }
 }
 
+void LiquidCrystal::Display::putc(const uint8_t data)
+{
+    send_data(data);
+}
+
+void LiquidCrystal::Display::puts(const char *s)
+{
+    while (*s)
+    {
+        putc(*s++);
+    }
+}
+
+void LiquidCrystal::Display::puts_p(const char *s)
+{
+    while (pgm_read_byte(s))
+    {
+        putc(pgm_read_byte(s++));
+    }
+}
+
 inline void LiquidCrystal::Display::send_command(uint8_t value)
 {
-    pin_rs.clear();
-    pin_rw.clear();
+    pin_rs.low();
+    pin_rw.low();
 
-    write4bits(value >> 4);
-    write4bits(value);
+    write_4_bits(value >> 4);
+    write_4_bits(value);
 }
 
 void LiquidCrystal::Display::send_data(uint8_t value)
 {
-    pin_rs.set();
-    pin_rw.clear();
+    pin_rs.high();
+    pin_rw.low();
 
-    write4bits(value >> 4);
-    write4bits(value);
+    write_4_bits(value >> 4);
+    write_4_bits(value);
 }
 
 void LiquidCrystal::Display::pulseEnable(void)
 {
-    pin_en.clear();
+    pin_en.low();
     _delay_us(1);
-    pin_en.set();
+    pin_en.high();
     _delay_us(1);
-    pin_en.clear();
+    pin_en.low();
     _delay_us(100);
 }
 
-void LiquidCrystal::Display::write4bits(uint8_t value)
+void LiquidCrystal::Display::write_4_bits(uint8_t value)
 {
-    pin_d4.write((value >> 0) & 0x01);
-    pin_d5.write((value >> 1) & 0x01);
-    pin_d6.write((value >> 2) & 0x01);
-    pin_d7.write((value >> 3) & 0x01);
+    pin_d4.write((value >> 0) & 1);
+    pin_d5.write((value >> 1) & 1);
+    pin_d6.write((value >> 2) & 1);
+    pin_d7.write((value >> 3) & 1);
 
     pulseEnable();
 }

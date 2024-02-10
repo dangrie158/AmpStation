@@ -41,7 +41,6 @@
 // flags for function set
 #define LCD_4BITMODE 0x00
 #define LCD_2LINE 0x08
-#define LCD_1LINE 0x00
 #define LCD_5x8DOTS 0x00
 
 namespace LiquidCrystal
@@ -56,10 +55,10 @@ namespace LiquidCrystal
     class Display
     {
     public:
-        Display(Output rs, Output rw, Output en, Output d4, Output d5, Output d6, Output d7)
+        Display(Output &rs, Output &rw, Output &en, Output &d4, Output &d5, Output &d6, Output &d7)
             : pin_rs(rs), pin_rw(rw), pin_en(en), pin_d4(d4), pin_d5(d5), pin_d6(d6), pin_d7(d7) {}
 
-        void begin();
+        void init();
 
         void clear();
         void home();
@@ -79,23 +78,27 @@ namespace LiquidCrystal
 
         void createChar(uint8_t, uint8_t[]);
         void setCursor(uint8_t, Row);
-        void send_command(uint8_t);
+
+        void putc(const uint8_t data);
+        void puts(const char *s);
+        void puts_p(const char *s);
+        inline uint8_t width() const { return 16; }
 
     private:
         void send_data(uint8_t);
-        void write4bits(uint8_t);
+        void send_command(uint8_t);
+        void write_4_bits(uint8_t);
         void pulseEnable();
 
-        IO::Output pin_rs;
-        IO::Output pin_rw;
-        IO::Output pin_en;
-        IO::Output pin_d4;
-        IO::Output pin_d5;
-        IO::Output pin_d6;
-        IO::Output pin_d7;
+        IO::Output &pin_rs;
+        IO::Output &pin_rw;
+        IO::Output &pin_en;
+        IO::Output &pin_d4;
+        IO::Output &pin_d5;
+        IO::Output &pin_d6;
+        IO::Output &pin_d7;
 
-        uint8_t m_displayfunction;
-        uint8_t m_displaycontrol;
-        uint8_t m_displaymode;
+        uint8_t m_displaycontrol = 0b00000000;
+        uint8_t m_displaymode = 0b00000000;
     };
 };

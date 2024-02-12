@@ -123,7 +123,7 @@ void LiquidCrystal::Display::noAutoscroll(void)
 
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
-void LiquidCrystal::Display::createChar(uint8_t location, uint8_t charmap[])
+void LiquidCrystal::Display::createChar(uint8_t location, const uint8_t charmap[])
 {
     location &= 0x7; // we only have 8 locations 0-7
     send_command(LCD_SETCGRAMADDR | (location << 3));

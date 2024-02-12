@@ -8,7 +8,9 @@ PROGRAMMER_PORT=/dev/tty.usbmodem*
 
 TARGET=firmware
 ENTRYPOINT=main.cpp
+EEPROM_IMAGE=.eeprom_data
 CPP_SOURCES=$(ENTRYPOINT)
+CPP_SOURCES+=$(wildcard src/*.cpp)
 CPP_SOURCES+=$(wildcard lib/*.cpp)
 O_FILES+=$(patsubst %.cpp,%.o,$(CPP_SOURCES))
 
@@ -24,8 +26,8 @@ O_FILES+=$(patsubst %.cpp,%.o,$(CPP_SOURCES))
 %.hex: %.elf
 	avr-objcopy -O ihex $< $@
 
-program: $(TARGET).hex
-	avrdude -p $(MMCU) -c arduino -P $(PROGRAMMER_PORT) -U flash:w:$<
+program: $(TARGET).hex ${EEPROM_IMAGE}
+	avrdude -p $(MMCU) -c arduino -P $(PROGRAMMER_PORT) -U eeprom:w:${EEPROM_IMAGE}:h -U flash:w:$<
 
 clean:
 	rm -f $(TARGET).hex $(TARGET).elf *.o

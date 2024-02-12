@@ -3,11 +3,11 @@
 #include "AdvancedIO.h"
 #include "Button.h"
 
-class RotaryEncoder : public Button, IO::PinChangeListener
+class RotaryEncoder : IO::PinChangeListener
 {
 public:
-    RotaryEncoder(IO::PinChangeInterruptPin &pin_a, IO::PinChangeInterruptPin &pin_b, IO::Input &pin_button, uint8_t stepsize = 1)
-        : Button(pin_button), m_pin_a(pin_a), m_pin_b(pin_b), m_stepsize(stepsize) {}
+    RotaryEncoder(IO::PinChangeInterruptPin &pin_a, IO::PinChangeInterruptPin &pin_b, uint8_t stepsize = 1)
+        : m_pin_a(pin_a), m_pin_b(pin_b), m_stepsize(stepsize) {}
 
     void init();
     void call() override;

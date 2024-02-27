@@ -2,7 +2,7 @@
 
 #include "IO.h"
 #include "Serial.h"
-#include "Timer1.h"
+#include "Timer.h"
 class Button : public IO::PinChangeListener
 {
 public:

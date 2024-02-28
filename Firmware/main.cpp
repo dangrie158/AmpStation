@@ -10,7 +10,7 @@
 #include "lib/I2C.h"
 #include "lib/LiquidCrystal.h"
 #include "lib/RotaryEncoder.h"
-#include "lib/PT2257.h"
+#include "lib/PT2258.h"
 #include "lib/Timer.h"
 
 #include <util/delay.h>
@@ -22,16 +22,16 @@
 #include "src/ChannelSetting.h"
 
 auto lcd = LiquidCrystal::Display(rs, rw, en, d4, d5, d6, d7);
-auto pt2257 = PT2257(I2C::HardwareMaster::the, 0x88);
+auto pt2258 = PT2258(I2C::HardwareMaster::the, 0x88);
 auto enc_button = Button(enc_button_pin);
-auto encoder = RotaryEncoder(enc_a, enc_b, 2);
+auto encoder = RotaryEncoder(enc_a, enc_b, encoder_stepsize);
 auto mute_button = Button(mute_pin);
 
 ChannelSetting channels[] = {
-    {"Master", PT2257::Channel::CHANNEL_MASTER, PT2257::Channel::CHANNEL_MASTER, (uint8_t *)0},
-    {"TOSLINK", PT2257::Channel::CHANNEL_1, PT2257::Channel::CHANNEL_2, (uint8_t *)1},
-    {"Line 1", PT2257::Channel::CHANNEL_3, PT2257::Channel::CHANNEL_4, (uint8_t *)2},
-    {"Line 2", PT2257::Channel::CHANNEL_5, PT2257::Channel::CHANNEL_6, (uint8_t *)3},
+    {"Master", PT2258::Channel::CHANNEL_MASTER, PT2258::Channel::CHANNEL_MASTER, (uint8_t *)0},
+    {"TOSLINK", PT2258::Channel::CHANNEL_1, PT2258::Channel::CHANNEL_2, (uint8_t *)1},
+    {"Line 1", PT2258::Channel::CHANNEL_3, PT2258::Channel::CHANNEL_4, (uint8_t *)2},
+    {"Line 2", PT2258::Channel::CHANNEL_5, PT2258::Channel::CHANNEL_6, (uint8_t *)3},
 };
 
 // todo: change to 120s
@@ -76,23 +76,23 @@ void set_amp_state(AmpState new_state)
     {
     case AmpState::POWERON:
         amp_power.high();
-        pt2257.unmute();
+        pt2258.unmute();
         break;
     case AmpState::MUTED:
         amp_power.high();
-        pt2257.mute();
+        pt2258.mute();
         break;
     case AmpState::POWERDOWN:
         amp_power.low();
-        pt2257.mute();
+        pt2258.mute();
         break;
     case AmpState::CLIP:
         amp_power.low();
-        pt2257.mute();
+        pt2258.mute();
         break;
     case AmpState::FAULT:
         amp_power.low();
-        pt2257.mute();
+        pt2258.mute();
         break;
     }
     amp_state = new_state;
@@ -232,7 +232,7 @@ void setup()
 
     for (auto &channel : channels)
     {
-        channel.load_saved_volume(pt2257);
+        channel.load_saved_volume(pt2258);
     }
     channels[current_channel].render(lcd, false);
     set_amp_state(AmpState::POWERON);
@@ -285,7 +285,7 @@ void loop()
     {
         if (channel_active)
         {
-            channels[current_channel].offset_volume(pt2257, encoder_delta);
+            channels[current_channel].offset_volume(pt2258, encoder_delta);
         }
         else
         {

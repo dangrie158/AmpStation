@@ -17,10 +17,14 @@ const auto ringlight_dimmed = IO::Output(IO::Port::PortD, 5);
 const auto amp_power = IO::Output(IO::Port::PortC, 2);
 const auto audio_detect = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 3, IO::PullupMode::Disable);
 
-auto enc_a = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortB, 7, IO::PullupMode::Enable);
-auto enc_b = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 1, IO::PullupMode::Enable);
+auto enc_a = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 1, IO::PullupMode::Enable);
+auto enc_b = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortB, 7, IO::PullupMode::Enable);
 auto enc_button_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 2, IO::PullupMode::Enable);
 
 auto mute_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 3, IO::PullupMode::Enable);
 auto amp_fault_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 1, IO::PullupMode::Enable);
 auto amp_clip_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 0, IO::PullupMode::Enable);
+
+constexpr uint8_t encoder_stepsize = 1;
+constexpr uint16_t standby_delay_seconds = 120;
+constexpr uint16_t lightsout_delay_seconds = 10;

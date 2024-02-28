@@ -1,7 +1,7 @@
 #pragma once
 #include <inttypes.h>
 
-constexpr auto SCL_CLOCK = 50000L;
+constexpr auto SCL_CLOCK = 100000L;
 static_assert(((F_CPU / SCL_CLOCK) - 16) / 2 >= 2);
 
 namespace I2C

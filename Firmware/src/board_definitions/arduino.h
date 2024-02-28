@@ -24,3 +24,7 @@ auto enc_button_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::Port
 auto mute_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 2, IO::PullupMode::Enable);
 auto amp_fault_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 1, IO::PullupMode::Enable);
 auto amp_clip_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 1, IO::PullupMode::Enable);
+
+constexpr uint8_t encoder_stepsize = 2;
+constexpr uint16_t standby_delay_seconds = 30;
+constexpr uint16_t lightsout_delay_seconds = 5;

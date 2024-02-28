@@ -2,20 +2,29 @@ CC=avr-gcc
 CXX=avr-g++
 CFLAGS=-std=c99
 CXXFLAGS=-std=c++11
-CPPFLAGS=-g -Os -Wall -mcall-prologues -mmcu=$(MMCU) -DF_CPU=$(F_CPU) -I.
+CPPFLAGS=-g -Os -Wall -mcall-prologues -mmcu=$(MMCU) -I.
 MMCU=atmega328p
-BOARD=arduino
+BOARD=real
+
 ifeq ($(BOARD),arduino)
 F_CPU=16000000UL
-CPPFLAGS+=-DBOARD_DEFINITION=\"src/board_definitions/arduino.h\"
+CPPFLAGS+=-DF_CPU=$(F_CPU)
+BOARD_DEFINITION="src/board_definitions/arduino.h"
 PROGRAMMER_PORT=/dev/tty.usbmodem*
 PROGRAMMERFLAGS=-c arduino -P /dev/tty.usbmodem* -p $(MMCU)
 else ifeq ($(BOARD),real)
 F_CPU=1000000UL
-CPPFLAGS+=-DBOARD_DEFINITION=\"src/board_definitions/real.h\"
-PROGRAMMERFLAGS=-c avrispv2 -P usb -p $(MMCU)
-PROGRAMMER_PORT=usb
+CPPFLAGS+=-DF_CPU=$(F_CPU)
+BOARD_DEFINITION="src/board_definitions/real.h"
+# PROGRAMMERFLAGS=-c avrispv2 -P usb -p $(MMCU)
+# PROGRAMMER_PORT=usb
+PROGRAMMERFLAGS=-c avrispv -P /dev/tty.usbmodem* -p $(MMCU)  -b 19200
+PROGRAMMER_PORT=/dev/tty.usbmodem*
+else
+$(error BOARD must be set to either arduino or real)
 endif
+
+CPPFLAGS+=-DBOARD_DEFINITION=\"$(BOARD_DEFINITION)\"
 
 TARGET=firmware
 ENTRYPOINT=main.cpp
@@ -26,7 +35,7 @@ CPP_SOURCES+=$(wildcard lib/*.cpp)
 O_FILES+=$(patsubst %.cpp,%.o,$(CPP_SOURCES))
 .DEFAULT_GOAL := flash
 
-%.o: %.c
+%.o: %.c $(BOARD_DEFINITION)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 %.o: %.cpp

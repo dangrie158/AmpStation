@@ -20,8 +20,8 @@ void PT2258::begin()
 void PT2258::set_attenuation(Channel channel, uint8_t attenuation)
 {
     m_bus.start(m_address, I2C::Direction::Write);
-    m_bus.write(channel_registers[channel][0] | (attenuation % 10));
     m_bus.write(channel_registers[channel][1] | (attenuation / 10));
+    m_bus.write(channel_registers[channel][0] | (attenuation % 10));
     m_bus.stop();
 }
 

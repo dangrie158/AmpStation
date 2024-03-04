@@ -25,8 +25,8 @@ public:
 
     static const uint8_t channel_registers[7][2];
 
-    PT2258(const I2C::HardwareMaster &bus, uint8_t address) : m_bus(bus),
-                                                              m_address(address) {}
+    PT2258(const I2C::Master &bus, uint8_t address) : m_bus(bus),
+                                                      m_address(address) {}
 
     void begin();
     void set_attenuation(Channel channel, uint8_t attenuation);
@@ -34,6 +34,6 @@ public:
     void unmute();
 
 private:
-    const I2C::HardwareMaster &m_bus;
+    const I2C::Master &m_bus;
     uint8_t m_address;
 };

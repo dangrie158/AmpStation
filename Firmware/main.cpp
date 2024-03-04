@@ -22,7 +22,7 @@
 #include "src/ChannelSetting.h"
 
 auto lcd = LiquidCrystal::Display(rs, rw, en, d4, d5, d6, d7);
-auto pt2258 = PT2258(I2C::HardwareMaster::the, 0x88);
+auto pt2258 = PT2258(i2c_bus, 0x88);
 auto enc_button = Button(enc_button_pin);
 auto encoder = RotaryEncoder(enc_a, enc_b, encoder_stepsize);
 auto mute_button = Button(mute_pin);
@@ -33,10 +33,6 @@ ChannelSetting channels[] = {
     {"Line 1", PT2258::Channel::CHANNEL_3, PT2258::Channel::CHANNEL_4, (uint8_t *)2},
     {"Line 2", PT2258::Channel::CHANNEL_5, PT2258::Channel::CHANNEL_6, (uint8_t *)3},
 };
-
-// todo: change to 120s
-constexpr uint16_t standby_delay_seconds = 30;
-constexpr uint16_t lightsout_delay_seconds = 5;
 
 uint8_t current_channel = 0;
 bool channel_active = false;
@@ -110,6 +106,7 @@ void set_display_state(DisplayState new_state)
     case DisplayState::POWERON:
         set_amp_state(AmpState::POWERON);
         lcd_backlight.high();
+        lcd.display();
         ringlight_bright.high();
         ringlight_dimmed.low();
         Serial::UART::the.puts("Power On\r\n");
@@ -123,6 +120,7 @@ void set_display_state(DisplayState new_state)
         {
             ringlight_bright.low();
             lcd_backlight.low();
+            lcd.noDisplay();
         }
         else if (display_state == DisplayState::STANDBY)
         {
@@ -140,6 +138,7 @@ void set_display_state(DisplayState new_state)
         ringlight_bright.low();
         ringlight_dimmed.low();
         lcd_backlight.low();
+        lcd.noDisplay();
 
         // Timer::stop();
         // set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -214,7 +213,7 @@ void on_timer_ticked()
 void setup()
 {
     Serial::UART::the.init(9600);
-    I2C::HardwareMaster::the.init();
+    i2c_bus.init();
     lcd.init();
     load_progressbar_chars(lcd);
     encoder.init();
@@ -278,6 +277,10 @@ void loop()
         reset_timeout_timers();
         set_display_state(DisplayState::POWERON);
         channel_active = !channel_active;
+        if (!channel_active)
+        {
+            channels[current_channel].save_volume();
+        }
         needs_rerender = true;
     }
 

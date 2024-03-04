@@ -91,3 +91,78 @@ uint8_t I2C::HardwareMaster::read(uint8_t do_ack) const
 
     return TWDR;
 }
+
+void I2C::SoftwareMaster::init() const
+{
+    m_scl.clear();
+    m_sda.clear();
+    scl_set();
+    sda_set();
+    bit_clock();
+}
+I2C::Result I2C::SoftwareMaster::start(uint8_t address, Direction direction) const
+{
+    m_sda.set_mode(IO::Direction::Input);
+    m_scl.set_mode(IO::Direction::Input);
+    bit_clock();
+
+    sda_clear();
+    bit_clock();
+
+    scl_clear();
+    bit_clock();
+
+    if (direction == Direction::Read)
+    {
+        address |= 1;
+    }
+    return write(address);
+}
+
+void I2C::SoftwareMaster::start_wait(uint8_t address, Direction direction) const
+{
+    start(address, direction);
+}
+
+void I2C::SoftwareMaster::stop() const
+{
+    scl_set();
+    bit_clock();
+
+    sda_set();
+    bit_clock();
+}
+
+I2C::Result I2C::SoftwareMaster::write(uint8_t data) const
+{
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        write_bit(data & 0x80);
+        data <<= 1;
+    }
+
+    return read_bit() ? Result::Error : Result::Success;
+}
+
+uint8_t I2C::SoftwareMaster::read(uint8_t do_ack) const
+{
+    uint8_t result = 0;
+
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        result <<= 1;
+        result |= read_bit();
+    }
+
+    if (do_ack)
+    {
+        write_bit(0);
+    }
+    else
+    {
+        write_bit(1);
+    }
+    bit_clock();
+
+    return result;
+}

@@ -2,6 +2,7 @@
 
 #include "lib/IO.h"
 #include "lib/AdvancedIO.h"
+#include "lib/I2C.h"
 
 auto rs = IO::Output(IO::Port::PortB, 0);
 auto rw = IO::Output(IO::Port::PortB, 1);
@@ -24,6 +25,10 @@ auto enc_button_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::Port
 auto mute_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 3, IO::PullupMode::Enable);
 auto amp_fault_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 1, IO::PullupMode::Enable);
 auto amp_clip_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 0, IO::PullupMode::Enable);
+
+auto sda_pin = IO::IO(IO::Port::PortC, 5, IO::Direction::Input);
+auto scl_pin = IO::IO(IO::Port::PortC, 4, IO::Direction::Input);
+const I2C::Master &i2c_bus = I2C::SoftwareMaster(scl_pin, sda_pin);
 
 constexpr uint8_t encoder_stepsize = 1;
 constexpr uint16_t standby_delay_seconds = 120;

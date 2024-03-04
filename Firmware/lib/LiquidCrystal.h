@@ -63,21 +63,21 @@ namespace LiquidCrystal
         void clear();
         void home();
 
-        void noDisplay();
+        void no_display();
         void display();
-        void noBlink();
+        void no_blink();
         void blink();
-        void noCursor();
+        void no_cursor();
         void cursor();
-        void scrollDisplayLeft();
-        void scrollDisplayRight();
-        void leftToRight();
-        void rightToLeft();
+        void scrol_display_left();
+        void scroll_display_right();
+        void left_to_right();
+        void right_to_left();
         void autoscroll();
-        void noAutoscroll();
+        void no_autoscroll();
 
-        void createChar(uint8_t, const uint8_t[]);
-        void setCursor(uint8_t, Row);
+        void create_char(uint8_t, const uint8_t[]);
+        void set_cursor(uint8_t, Row);
 
         void putc(const uint8_t data);
         void puts(const char *s);

@@ -69,7 +69,7 @@ void load_progressbar_chars(LiquidCrystal::Display &lcd)
 {
     for (uint8_t i = 0; i < sizeof(progressbar_chars) / sizeof(progressbar_chars[0]); i++)
     {
-        lcd.createChar(i, progressbar_chars[i]);
+        lcd.create_char(i, progressbar_chars[i]);
     }
 }
 
@@ -77,7 +77,7 @@ void draw_progressbar(LiquidCrystal::Display &lcd, LiquidCrystal::Row row, uint8
 {
     uint8_t progress_chars = lcd.width() - 2;
     uint8_t scaled_progress = ((uint16_t)progress * (progress_chars * 5)) / 100;
-    lcd.setCursor(0, row);
+    lcd.set_cursor(0, row);
     active ? lcd.putc(0x06) : lcd.putc(0);
     for (uint8_t i = 0; i < progress_chars; i++)
     {

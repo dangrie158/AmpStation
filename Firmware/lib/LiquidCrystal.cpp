@@ -44,12 +44,12 @@ void LiquidCrystal::Display::home()
     _delay_us(2000);              // this command takes a long time!
 }
 
-void LiquidCrystal::Display::setCursor(uint8_t col, LiquidCrystal::Row row)
+void LiquidCrystal::Display::set_cursor(uint8_t col, LiquidCrystal::Row row)
 {
     send_command(LCD_SETDDRAMADDR | (col + row));
 }
 
-void LiquidCrystal::Display::noDisplay()
+void LiquidCrystal::Display::no_display()
 {
     m_displaycontrol &= ~LCD_DISPLAYON;
     send_command(LCD_DISPLAYCONTROL | m_displaycontrol);
@@ -61,7 +61,7 @@ void LiquidCrystal::Display::display()
     send_command(LCD_DISPLAYCONTROL | m_displaycontrol);
 }
 
-void LiquidCrystal::Display::noCursor()
+void LiquidCrystal::Display::no_cursor()
 {
     m_displaycontrol &= ~LCD_CURSORON;
     send_command(LCD_DISPLAYCONTROL | m_displaycontrol);
@@ -73,7 +73,7 @@ void LiquidCrystal::Display::cursor()
     send_command(LCD_DISPLAYCONTROL | m_displaycontrol);
 }
 
-void LiquidCrystal::Display::noBlink()
+void LiquidCrystal::Display::no_blink()
 {
     m_displaycontrol &= ~LCD_BLINKON;
     send_command(LCD_DISPLAYCONTROL | m_displaycontrol);
@@ -85,23 +85,23 @@ void LiquidCrystal::Display::blink()
     send_command(LCD_DISPLAYCONTROL | m_displaycontrol);
 }
 
-void LiquidCrystal::Display::scrollDisplayLeft(void)
+void LiquidCrystal::Display::scrol_display_left(void)
 {
     send_command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVELEFT);
 }
 
-void LiquidCrystal::Display::scrollDisplayRight(void)
+void LiquidCrystal::Display::scroll_display_right(void)
 {
     send_command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVERIGHT);
 }
 
-void LiquidCrystal::Display::leftToRight(void)
+void LiquidCrystal::Display::left_to_right(void)
 {
     m_displaymode |= LCD_ENTRYLEFT;
     send_command(LCD_ENTRYMODESET | m_displaymode);
 }
 
-void LiquidCrystal::Display::rightToLeft(void)
+void LiquidCrystal::Display::right_to_left(void)
 {
     m_displaymode &= ~LCD_ENTRYLEFT;
     send_command(LCD_ENTRYMODESET | m_displaymode);
@@ -115,7 +115,7 @@ void LiquidCrystal::Display::autoscroll(void)
 }
 
 // This will 'left justify' text from the cursor
-void LiquidCrystal::Display::noAutoscroll(void)
+void LiquidCrystal::Display::no_autoscroll(void)
 {
     m_displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
     send_command(LCD_ENTRYMODESET | m_displaymode);
@@ -123,7 +123,7 @@ void LiquidCrystal::Display::noAutoscroll(void)
 
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
-void LiquidCrystal::Display::createChar(uint8_t location, const uint8_t charmap[])
+void LiquidCrystal::Display::create_char(uint8_t location, const uint8_t charmap[])
 {
     location &= 0x7; // we only have 8 locations 0-7
     send_command(LCD_SETCGRAMADDR | (location << 3));

@@ -120,7 +120,7 @@ void set_display_state(DisplayState new_state)
         {
             ringlight_bright.low();
             lcd_backlight.low();
-            lcd.noDisplay();
+            lcd.no_display();
         }
         else if (display_state == DisplayState::STANDBY)
         {
@@ -138,7 +138,7 @@ void set_display_state(DisplayState new_state)
         ringlight_bright.low();
         ringlight_dimmed.low();
         lcd_backlight.low();
-        lcd.noDisplay();
+        lcd.no_display();
 
         // Timer::stop();
         // set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -308,14 +308,14 @@ void loop()
         if (amp_state == AmpState::FAULT || amp_state == AmpState::CLIP)
         {
             lcd.clear();
-            lcd.setCursor(0, LiquidCrystal::Row::Second);
+            lcd.set_cursor(0, LiquidCrystal::Row::Second);
             lcd.puts("\x06\x06   FAULT!   \x07\x07");
             return;
         }
         if (amp_state == AmpState::MUTED)
         {
             lcd.clear();
-            lcd.setCursor(0, LiquidCrystal::Row::Second);
+            lcd.set_cursor(0, LiquidCrystal::Row::Second);
             lcd.puts("\x06\x06    Mute    \x07\x07");
             return;
         }

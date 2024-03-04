@@ -31,11 +31,11 @@ void ChannelSetting::render(LiquidCrystal::Display &lcd, bool active)
     lcd.clear();
     uint8_t progress = (m_attenuation + PT2258::max_volume) * 100 / PT2258::max_volume;
     draw_progressbar(lcd, LiquidCrystal::Row::First, progress, active);
-    lcd.setCursor(1, LiquidCrystal::Row::Second);
+    lcd.set_cursor(1, LiquidCrystal::Row::Second);
     lcd.puts(m_name);
     char volume_str[16];
     sprintf(volume_str, "%02ddB", m_attenuation);
 
-    lcd.setCursor(lcd.width() - strnlen(volume_str, 16) - 1, LiquidCrystal::Row::Second);
+    lcd.set_cursor(lcd.width() - strnlen(volume_str, 16) - 1, LiquidCrystal::Row::Second);
     lcd.puts(volume_str);
 }

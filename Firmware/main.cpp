@@ -170,9 +170,13 @@ class : public IO::PinChangeListener
 {
     void call() override
     {
-        if (audio_detect.read() && display_state == DisplayState::STANDBY)
+        if (audio_detect.read())
         {
-            set_display_state(DisplayState::LIGHTSOUT);
+            if (display_state == DisplayState::STANDBY)
+            {
+                set_display_state(DisplayState::LIGHTSOUT);
+            }
+            seconds_until_standby = standby_delay_seconds;
         }
     }
 } audio_detect_listener;

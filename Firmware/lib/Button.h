@@ -6,7 +6,7 @@
 class Button : public IO::PinChangeListener
 {
 public:
-    static constexpr uint16_t debounce_time_ms = 50;
+    static constexpr uint16_t debounce_time_ms = 200;
 
     Button(IO::PinChangeInterruptPin &pin, bool active_high = false)
         : m_pin(pin), m_active_high(active_high)
@@ -38,17 +38,15 @@ public:
         auto current_state = is_pressed();
         auto now = Timer::now();
 
-        if (current_state)
+        if (current_state && (now - m_last_pressed) > debounce_time_ms && !m_was_pressed)
         {
             m_was_pressed = true;
             m_last_pressed = now;
-        }
-        // button was pressed and is now released after debounce time
-        else if (m_was_pressed && (now - m_last_pressed) > debounce_time_ms)
-        {
-            m_last_pressed = now;
-            m_was_pressed = false;
             m_was_clicked = true;
+        }
+        else if (!current_state)
+        {
+            m_was_pressed = false;
         }
     }
 

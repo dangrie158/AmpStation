@@ -18,7 +18,8 @@ CPPFLAGS+=-DF_CPU=$(F_CPU)
 BOARD_DEFINITION="src/board_definitions/real.h"
 # PROGRAMMERFLAGS=-c avrispv2 -P usb -p $(MMCU)
 # PROGRAMMER_PORT=usb
-PROGRAMMERFLAGS=-c avrisp -P /dev/tty.usbmodem* -p $(MMCU)  -b 19200
+# PROGRAMMERFLAGS=-c avrisp -P /dev/tty.usbmodem* -p $(MMCU)  -b 19200
+PROGRAMMERFLAGS=-c usbasp -P usb -p $(MMCU)  -b 19200
 PROGRAMMER_PORT=/dev/tty.usbmodem*
 else
 $(error BOARD must be set to either arduino or real)

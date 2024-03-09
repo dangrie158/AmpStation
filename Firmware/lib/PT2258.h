@@ -6,8 +6,8 @@
 class PT2258
 {
 public:
-    constexpr static uint8_t min_volume = 0;
-    constexpr static uint8_t max_volume = 79;
+    constexpr static uint8_t min_attenuation = 0;
+    constexpr static uint8_t max_attenuation = 79;
 
     enum Channel
     {
@@ -29,11 +29,15 @@ public:
                                                       m_address(address) {}
 
     void begin();
-    void set_attenuation(Channel channel, uint8_t attenuation);
+    void set_attenuation(Channel, uint8_t attenuation);
     void mute();
     void unmute();
+    void set_global_volume(uint8_t);
 
 private:
     const I2C::Master &m_bus;
     uint8_t m_address;
+
+    uint8_t m_volume = 0;
+    uint8_t m_attenuation[7] = {0};
 };

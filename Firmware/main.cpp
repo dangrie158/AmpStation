@@ -27,12 +27,11 @@ auto enc_button = Button(enc_button_pin);
 auto encoder = RotaryEncoder(enc_a, enc_b, encoder_stepsize);
 auto mute_button = Button(mute_pin);
 
-ChannelSetting channels[] = {
-    {"Master", PT2258::Channel::CHANNEL_MASTER, PT2258::Channel::CHANNEL_MASTER, (uint8_t *)0},
-    {"TOSLINK", PT2258::Channel::CHANNEL_1, PT2258::Channel::CHANNEL_2, (uint8_t *)1},
-    {"Line 1", PT2258::Channel::CHANNEL_3, PT2258::Channel::CHANNEL_4, (uint8_t *)2},
-    {"Line 2", PT2258::Channel::CHANNEL_5, PT2258::Channel::CHANNEL_6, (uint8_t *)3},
-};
+auto master_channel = MasterChannelSetting((uint8_t *)0);
+auto toslink_channel = SingleChannelSetting("TOSLINK", PT2258::Channel::CHANNEL_1, PT2258::Channel::CHANNEL_2, (uint8_t *)1);
+auto line1_channel = SingleChannelSetting("Line 1", PT2258::Channel::CHANNEL_5, PT2258::Channel::CHANNEL_6, (uint8_t *)2);
+auto line2_channel = SingleChannelSetting("Line 2", PT2258::Channel::CHANNEL_3, PT2258::Channel::CHANNEL_4, (uint8_t *)3);
+ChannelSetting *channels[] = {&master_channel, &toslink_channel, &line1_channel, &line2_channel};
 
 uint8_t current_channel = 0;
 bool channel_active = false;
@@ -75,12 +74,12 @@ void set_amp_state(AmpState new_state)
         pt2258.unmute();
         break;
     case AmpState::MUTED:
-        amp_power.high();
+        amp_power.low();
         pt2258.mute();
         break;
     case AmpState::POWERDOWN:
         amp_power.low();
-        pt2258.mute();
+        pt2258.unmute(); // unmute so we can detect audio
         break;
     case AmpState::CLIP:
         amp_power.low();
@@ -109,12 +108,10 @@ void set_display_state(DisplayState new_state)
         lcd.display();
         ringlight_bright.high();
         ringlight_dimmed.low();
-        Serial::UART::the.puts("Power On\r\n");
         needs_rerender = true;
         break;
     case DisplayState::LIGHTSOUT:
         set_amp_state(AmpState::POWERON);
-        Serial::UART::the.puts("Enter lightsout\r\n");
         ringlight_dimmed.high();
         if (display_state == DisplayState::POWERON)
         {
@@ -124,7 +121,6 @@ void set_display_state(DisplayState new_state)
         }
         else if (display_state == DisplayState::STANDBY)
         {
-            Serial::UART::the.puts("Exiting standby\r\n");
             seconds_until_standby = standby_delay_seconds;
             Timer::start();
         }
@@ -134,17 +130,11 @@ void set_display_state(DisplayState new_state)
         {
             set_amp_state(AmpState::POWERDOWN);
         }
-        Serial::UART::the.puts("Enter standby\r\n");
         ringlight_bright.low();
         ringlight_dimmed.low();
         lcd_backlight.low();
         lcd.no_display();
 
-        // Timer::stop();
-        // set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-
-        // don't call sleep_mode() here, it will be called in the loop so we can be
-        // sure to not enter sleep mode while we're rendering the display
         break;
     }
     display_state = new_state;
@@ -189,7 +179,6 @@ class : public IO::PinChangeListener
 
 void on_timer_ticked()
 {
-    Serial::UART::the.puts(".");
 
     if (seconds_until_lightsout > 0)
     {
@@ -231,9 +220,9 @@ void setup()
 
     for (auto &channel : channels)
     {
-        channel.load_saved_volume(pt2258);
+        channel->load_saved_volume(pt2258);
     }
-    channels[current_channel].render(lcd, false);
+    channels[current_channel]->render(lcd, false);
     set_amp_state(AmpState::POWERON);
     set_display_state(DisplayState::POWERON);
 }
@@ -279,7 +268,7 @@ void loop()
         channel_active = !channel_active;
         if (!channel_active)
         {
-            channels[current_channel].save_volume();
+            channels[current_channel]->save_volume();
         }
         needs_rerender = true;
     }
@@ -288,7 +277,7 @@ void loop()
     {
         if (channel_active)
         {
-            channels[current_channel].offset_volume(pt2258, encoder_delta);
+            channels[current_channel]->offset_volume(pt2258, encoder_delta);
         }
         else
         {
@@ -320,7 +309,7 @@ void loop()
             return;
         }
 
-        channels[current_channel].render(lcd, channel_active);
+        channels[current_channel]->render(lcd, channel_active);
     }
     sleep_mode();
 }

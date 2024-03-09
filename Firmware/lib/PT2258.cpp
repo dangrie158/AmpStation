@@ -19,9 +19,14 @@ void PT2258::begin()
 
 void PT2258::set_attenuation(Channel channel, uint8_t attenuation)
 {
+    m_attenuation[channel] = attenuation;
+
+    uint8_t additional_attenuation = ((max_attenuation - attenuation) * (100 - m_volume)) / 100;
+    uint8_t final_attenuation = attenuation + additional_attenuation;
+
     m_bus.start(m_address, I2C::Direction::Write);
-    m_bus.write(channel_registers[channel][1] | (attenuation / 10));
-    m_bus.write(channel_registers[channel][0] | (attenuation % 10));
+    m_bus.write(channel_registers[channel][1] | (final_attenuation / 10));
+    m_bus.write(channel_registers[channel][0] | (final_attenuation % 10));
     m_bus.stop();
 }
 
@@ -37,4 +42,13 @@ void PT2258::unmute()
     m_bus.start(m_address, I2C::Direction::Write);
     m_bus.write(CMD_UNMUTE);
     m_bus.stop();
+}
+
+void PT2258::set_global_volume(uint8_t volume)
+{
+    m_volume = volume > 100 ? 100 : volume;
+    for (uint8_t i = CHANNEL_1; i < CHANNEL_6; i++)
+    {
+        set_attenuation((Channel)i, m_attenuation[i]);
+    }
 }

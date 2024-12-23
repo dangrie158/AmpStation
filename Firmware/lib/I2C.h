@@ -73,8 +73,8 @@ namespace I2C
         }
         inline void scl_clear() const
         {
-            m_scl.set_mode(IO::Direction::Output);
             m_scl.clear();
+            m_scl.set_mode(IO::Direction::Output);
         }
         inline void sda_set() const
         {
@@ -82,12 +82,13 @@ namespace I2C
         }
         inline void sda_clear() const
         {
-            m_sda.set_mode(IO::Direction::Output);
             m_sda.clear();
+            m_sda.set_mode(IO::Direction::Output);
         }
         inline void bit_clock() const
         {
-            _delay_us(5);
+            // 10kHz Clock
+            _delay_us(50);
         }
 
         inline uint8_t read_bit() const
@@ -98,8 +99,6 @@ namespace I2C
             uint8_t data = m_sda.read();
 
             scl_clear();
-            bit_clock();
-
             return data;
         }
 
@@ -118,13 +117,6 @@ namespace I2C
             bit_clock();
 
             scl_clear();
-            bit_clock();
-
-            if (data)
-            {
-                sda_clear();
-            }
-
             bit_clock();
         }
 

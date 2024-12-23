@@ -35,9 +35,10 @@ public:
     void set_global_volume(uint8_t);
 
 private:
+    void send_attenuation(Channel);
     const I2C::Master &m_bus;
     uint8_t m_address;
 
     uint8_t m_volume = 0;
-    uint8_t m_attenuation[7] = {0};
+    uint8_t m_attenuation[7] = {0, 0, 0, 0, 0, 0, 0};
 };

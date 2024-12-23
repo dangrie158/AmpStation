@@ -105,6 +105,7 @@ void set_display_state(DisplayState new_state)
     case DisplayState::POWERON:
         set_amp_state(AmpState::POWERON);
         lcd_backlight.high();
+        lcd.init();
         lcd.display();
         ringlight_bright.high();
         ringlight_dimmed.low();
@@ -315,6 +316,11 @@ void loop()
 
         channels[current_channel]->render(lcd, channel_active);
     }
+    // sleep for 100 ms, which is a simple way to debounce some stuff
+    // (e.g. the encoder updating the pt2258). Since we enter sleep mode
+    // right after this, we're ready to wake up again as soon as something
+    // (PCINT) happens.
+    _delay_ms(100);
     sleep_mode();
 }
 

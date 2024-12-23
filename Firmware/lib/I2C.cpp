@@ -100,15 +100,18 @@ void I2C::SoftwareMaster::init() const
     sda_set();
     bit_clock();
 }
+
 I2C::Result I2C::SoftwareMaster::start(uint8_t address, Direction direction) const
 {
     m_sda.set_mode(IO::Direction::Input);
     m_scl.set_mode(IO::Direction::Input);
+
+    sda_set();
+    scl_set();
     bit_clock();
 
     sda_clear();
     bit_clock();
-
     scl_clear();
     bit_clock();
 
@@ -126,10 +129,12 @@ void I2C::SoftwareMaster::start_wait(uint8_t address, Direction direction) const
 
 void I2C::SoftwareMaster::stop() const
 {
+    sda_clear();
+    bit_clock();
     scl_set();
     bit_clock();
-
     sda_set();
+    scl_clear();
     bit_clock();
 }
 

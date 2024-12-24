@@ -19,12 +19,19 @@ namespace Serial
         ReceiveComplete = 1 << RXC0,
     };
 
+    enum Direction : uint8_t
+    {
+        RX_ONLY = (1 << RXEN0) | (1 << RXCIE0),
+        TX_ONLY = 1 << TXEN0,
+        DUPLEX = RX_ONLY | TX_ONLY
+    };
+
     class UART
     {
     public:
         static UART the;
 
-        void init(uint32_t baudrate) const;
+        void init(uint32_t baudrate, Direction direction = Direction::DUPLEX) const;
 
         uint8_t getc(void);
         void putc(const uint8_t data);
@@ -36,7 +43,7 @@ namespace Serial
 
     protected:
     private:
-        UART(){};
+        UART() {};
         UART(UART &other) = delete;
         volatile uint8_t status = {};
         volatile Buffer<char, 32> rx_buffer = Buffer<char, 32>();

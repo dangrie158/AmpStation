@@ -8,16 +8,17 @@
 #include "Serial.h"
 
 volatile uint16_t Timer::s_millis = 0;
+volatile uint16_t Timer::s_tenth = 0;
 List<Timer *> Timer::s_timers = {};
 
-constexpr uint8_t clock_setting = (1 << CS11) | (1 << CS10);
+constexpr uint8_t clock_setting = (1 << CS10); // no prescaler
 void Timer::init()
 {
     // Set CTC mode
     TCCR1B |= (1 << WGM12);
 
-    // Set compare value
-    OCR1A = (F_CPU / 64 / 1000);
+    // Set compare value (F_CPU * 100µS)
+    OCR1A = F_CPU / 10000;
 
     // Enable compare interrupt
     TIMSK1 |= (1 << OCIE1A);
@@ -48,15 +49,20 @@ void Timer::every(uint16_t period, void (*callback)())
 
 void Timer1OverflowInterruptHandler()
 {
-    ++Timer::s_millis;
+    ++Timer::s_tenth;
+    if (Timer::s_tenth == 10)
+    {
+        Timer::s_tenth = 0;
+        ++Timer::s_millis;
 
-    Timer::s_timers.for_each([](Timer *timer)
-                             {
+        Timer::s_timers.for_each([](Timer *timer)
+                                 {
                                 auto now = Timer::s_millis;
                                 if(now == timer->m_next_scheduled) {
                                     timer->m_next_scheduled = now + timer->m_period;
                                     timer->m_callback();
                                 } });
+    }
 }
 
 ISR(TIMER1_COMPA_vect)

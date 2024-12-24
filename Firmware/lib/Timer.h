@@ -22,6 +22,11 @@ public:
         return s_millis;
     }
 
+    inline static uint32_t now_micros()
+    {
+        return s_tenth * 100UL + s_millis * 1000UL;
+    }
+
     friend void Timer1OverflowInterruptHandler();
 
 private:
@@ -30,5 +35,6 @@ private:
     void (*m_callback)();
 
     static volatile uint16_t s_millis;
+    static volatile uint16_t s_tenth;
     static List<Timer *> s_timers;
 };

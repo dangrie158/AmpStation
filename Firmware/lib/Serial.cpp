@@ -41,7 +41,7 @@ void Serial::UartTransmitInterrupt()
     }
 }
 
-void Serial::UART::init(uint32_t baudrate) const
+void Serial::UART::init(uint32_t baudrate, Direction direction) const
 {
     // Set baud rate
     uint16_t ubrr = (F_CPU / 8 / baudrate - 1) / 2;
@@ -49,7 +49,7 @@ void Serial::UART::init(uint32_t baudrate) const
     UBRR0H = ubrr >> 8;
 
     // Enable receiver and transmitter with interrupts
-    UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0);
+    UCSR0B = direction;
 
     // Set frame format: 8data, 1stop bit
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);

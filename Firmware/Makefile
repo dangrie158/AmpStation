@@ -64,7 +64,7 @@ size: $(patsubst %.cpp,%.elf,$(ENTRYPOINT))
 	avr-size --mcu=atmega328p --format avr $<
 
 monitor:
-	screen $(PROGRAMMER_PORT) 9600
+	screen $(PROGRAMMER_PORT) 115200
 
 include .depend
 

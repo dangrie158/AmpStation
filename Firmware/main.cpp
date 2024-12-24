@@ -12,6 +12,7 @@
 #include "lib/RotaryEncoder.h"
 #include "lib/PT2258.h"
 #include "lib/Timer.h"
+#include "lib/IRReceiver.h"
 
 #include <util/delay.h>
 #include <avr/pgmspace.h>
@@ -26,6 +27,7 @@ auto pt2258 = PT2258(i2c_bus, 0x88);
 auto enc_button = Button(enc_button_pin);
 auto encoder = RotaryEncoder(enc_a, enc_b, encoder_stepsize);
 auto mute_button = Button(mute_pin);
+auto ir_receiver = IR::Receiver(ir_receiver_pin);
 
 auto master_channel = MasterChannelSetting((uint8_t *)0);
 auto toslink_channel = SingleChannelSetting("TOSLINK", PT2258::Channel::CHANNEL_1, PT2258::Channel::CHANNEL_2, (uint8_t *)1);
@@ -38,7 +40,9 @@ bool channel_active = false;
 bool is_muted = false;
 volatile uint16_t seconds_until_standby = standby_delay_seconds;
 volatile uint16_t seconds_until_lightsout = lightsout_delay_seconds;
+volatile uint16_t last_mute_action = 0;
 volatile bool needs_rerender = false;
+volatile IR::Command next_ir_command = IR::Command::UNKNOWN;
 
 enum class DisplayState
 {
@@ -63,6 +67,8 @@ void reset_timeout_timers()
 {
     seconds_until_standby = standby_delay_seconds;
     seconds_until_lightsout = lightsout_delay_seconds;
+    seconds_until_lightsout = lightsout_delay_seconds;
+    last_mute_action = Timer::now();
 }
 
 void set_amp_state(AmpState new_state)
@@ -182,31 +188,40 @@ class : public IO::PinChangeListener
     }
 } audio_detect_listener;
 
+class : public IR::CommandListener
+{
+    void on_receive(IR::Command command)
+    {
+        next_ir_command = command;
+    }
+} ir_receiver_listener;
+
 void on_timer_ticked()
 {
-
     if (seconds_until_lightsout > 0)
-    {
-        seconds_until_lightsout--;
-    }
-    else if (seconds_until_standby > 0)
-    {
-        set_display_state(DisplayState::LIGHTSOUT);
-
-        if (!audio_detect.read())
+        if (seconds_until_lightsout > 0)
         {
-            seconds_until_standby--;
+            seconds_until_lightsout--;
+            seconds_until_lightsout--;
         }
-    }
-    else
-    {
-        set_display_state(DisplayState::STANDBY);
-    }
+        else if (seconds_until_standby > 0)
+        {
+            set_display_state(DisplayState::LIGHTSOUT);
+
+            if (!audio_detect.read())
+            {
+                seconds_until_standby--;
+            }
+        }
+        else
+        {
+            set_display_state(DisplayState::STANDBY);
+        }
 }
 
 void setup()
 {
-    Serial::UART::the.init(9600);
+    Serial::UART::the.init(115200, Serial::Direction::TX_ONLY);
     i2c_bus.init();
     lcd.init();
     load_progressbar_chars(lcd);
@@ -219,6 +234,8 @@ void setup()
 
     audio_detect.pc_port().attach(audio_detect);
     audio_detect.pc_port().attach_callback(&audio_detect_listener);
+
+    ir_receiver.begin(&ir_receiver_listener);
 
     Timer::init();
     Timer::every(1000, on_timer_ticked);
@@ -243,14 +260,16 @@ void loop()
     set_sleep_mode(SLEEP_MODE_IDLE);
 
     int8_t encoder_delta = encoder.delta();
-    if (encoder_delta != 0)
+    if (encoder_delta != 0 || next_ir_command != IR::Command::UNKNOWN)
     {
         reset_timeout_timers();
         set_display_state(DisplayState::POWERON);
         needs_rerender = true;
     }
 
-    if (mute_button.was_pressed())
+    // ignore mutliple mute actions within the same second
+    bool mute_action_valid = last_mute_action + 1000 < Timer::now();
+    if ((mute_button.was_pressed() || next_ir_command == IR::Command::MUTE) && mute_action_valid)
     {
         reset_timeout_timers();
         set_display_state(DisplayState::POWERON);
@@ -275,6 +294,18 @@ void loop()
         {
             channels[current_channel]->save_volume();
         }
+        needs_rerender = true;
+    }
+
+    if (!is_muted && next_ir_command == IR::Command::VOLUME_UP)
+    {
+        channels[current_channel]->offset_volume(pt2258, 1);
+        needs_rerender = true;
+    }
+
+    if (!is_muted && next_ir_command == IR::Command::VOLUME_DOWN)
+    {
+        channels[current_channel]->offset_volume(pt2258, -1);
         needs_rerender = true;
     }
 
@@ -316,6 +347,8 @@ void loop()
 
         channels[current_channel]->render(lcd, channel_active);
     }
+
+    next_ir_command = IR::Command::UNKNOWN;
     // sleep for 100 ms, which is a simple way to debounce some stuff
     // (e.g. the encoder updating the pt2258). Since we enter sleep mode
     // right after this, we're ready to wake up again as soon as something

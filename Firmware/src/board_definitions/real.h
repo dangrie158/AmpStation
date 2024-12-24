@@ -17,6 +17,7 @@ const auto ringlight_bright = IO::Output(IO::Port::PortD, 6);
 const auto ringlight_dimmed = IO::Output(IO::Port::PortD, 5);
 const auto amp_power = IO::Output(IO::Port::PortC, 2);
 const auto audio_detect = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortC, 3, IO::PullupMode::Disable);
+const auto ir_receiver_pin = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 0, IO::PullupMode::Disable);
 
 auto enc_a = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortB, 7, IO::PullupMode::Enable);
 auto enc_b = IO::PinChangeInterruptPin(IO::PinChangeInterruptPort::PortD, 1, IO::PullupMode::Enable);
